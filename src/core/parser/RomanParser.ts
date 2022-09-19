@@ -27,17 +27,46 @@ export default class RomanParser implements IParser {
     IV: 4,
     I: 1,
   } as const
-  private readonly allChars: string[] = Object.keys(this.symbols)
-  private readonly allNumerals: number[] = Object.values(this.symbols)
+  private readonly characters: string[] = Object.keys(this.symbols)
+  private readonly numberals: number[] = Object.values(this.symbols)
 
   private validate(value: any) {
-    
+    if (typeof value !== "number") {
+      throw new Error(RomanParser.errors.invalid)
+    }
+
+    if (isNaN(value)) {
+        throw new Error(RomanParser.errors.invalid)
+    }
+
+    if (value < 0) {
+        throw new Error(RomanParser.errors.negative)
+      }
+
+    if (Math.floor(value) !== value) {
+      throw new Error(RomanParser.errors.decimal)
+    }
+
+    if (value > this.max) {
+      throw new Error(RomanParser.errors.max)
+    }
   }
 
-  // TODO: Implement
   parse(value: number): string {
     this.validate(value)
 
-    return "TODO"
+    if(value === 0) {
+        return this.zero
+    }
+
+    const roman = []
+    for (let i = 0; i < this.characters.length; i++) {
+        while (value >= this.numberals[i]) {
+            value -= this.numberals[i]
+            roman.push(this.characters[i])
+        }
+    }
+
+    return roman.join("")
   }
 }
