@@ -1,3 +1,7 @@
+# A simple roman parser made with NextJS and Typescript
+
+This was part of a technical challenge for a full time position.
+
 # How to start
 
 To execute locally
